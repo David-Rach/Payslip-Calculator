@@ -1,0 +1,67 @@
+﻿@page
+@model Payslip_Calculator.Pages.PaySlipDetailsModel
+@{
+    var payPeriod = Model?.PayslipInfo != null ? DateTime.Parse(Model.PayslipInfo.PayPeriod) : DateTime.Today;
+    var firstDayOfMonth = new DateTime(payPeriod.Year, payPeriod.Month, 1);
+    var lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+
+    <form method="post">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="FirstName">First Name</label>
+                            <input type="text" class="form-control" asp-for="FormValues.FirstName">
+                            <span class="text-danger" asp-validation-for="FormValues.FirstName"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="LastName">Last Name</label>
+                            <input type="text" class="form-control" asp-for="FormValues.LastName">
+                            <span class="text-danger" asp-validation-for="FormValues.LastName"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="AnnualSalary">Annual Salary</label>
+                            <input type="number" class="form-control" asp-for="FormValues.AnnualSalary">
+                            <span class="text-danger" asp-validation-for="FormValues.AnnualSalary"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="SuperRate">Super Rate</label>
+                            <input type="number" class="form-control" asp-for="FormValues.SuperRate" max=50 min=0>
+                            <span class="text-danger" asp-validation-for="FormValues.SuperRate"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="PayPeriod">Pay Period</label>
+                            <input type="month" class="form-control" asp-for="FormValues.PayPeriod">
+                            <span class="text-danger" asp-validation-for="FormValues.PayPeriod"></span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-2" type="submit">Calculate Payslip</button>
+
+                </div>
+                <div class="col">
+                    @{
+                        if (Model?.PayslipInfo != null)
+                        {
+                            <h3>Payslip Information:</h3>
+                            <p><b>Name:</b> @Model?.PayslipInfo?.Name</p>
+                            <p><b>Pay Period</b>: @firstDayOfMonth.ToString("dd MMMM") to @lastDayOfMonth.ToString("dd MMMM") </p>
+                            <p><b>Gross Income</b>: @Model?.PayslipInfo?.GrossIncome.ToString("C")</p>
+                            <p><b>Income Tax</b>: @Model?.PayslipInfo?.IncomeTax.ToString("C")</p>
+                            <p><b>Net Income</b>: @Model?.PayslipInfo?.NetIncome.ToString("C")</p>
+                            <p><b>Super</b>: @Model?.PayslipInfo?.Super.ToString("C")</p>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+}
